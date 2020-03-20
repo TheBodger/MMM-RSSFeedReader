@@ -11,7 +11,7 @@ thanks to By Michael Teeuw http://michaelteeuw.nl who created this as part of th
 
 ## Screenshot
 - RSS feed reader Screenshot using Elle magazine RSS 2.0 feed (https://www.elle.com/rss/all.xml/)
-![RSS feed reader Screenshot](RSSfeed_screenshot.png)
+![RSS feed reader Screenshot](RSSFeedReader_screenshot.png)
 
 ## Using the module
 
