@@ -2,8 +2,9 @@
 The `MMM-RSSFeedReader ` module is a module for the MagicMirror2 system.
 This module displays RSS details based on a RSS feed that meets RSS 2.0 or ATOM formats, including title, age of post, an image if present and author and summary details about the post. Scrolling through RSS posts happens happens time-based (````updateInterval````), but can also be controlled by sending specific notifications to the module.
 
-requires htmlparser2 (npm install htmlparser2)
-requires feedMe (npm install feedMe)
+Requires: 
+	htmlparser2 (npm install htmlparser2)
+	feedMe (npm install feedMe)
 
 This uses the core code developed for the MM2 default module NewsFeed:
 
@@ -24,7 +25,7 @@ modules: [
 		position: "top_center",	// This can be any of the regions. Best results in center regions.
 		config: {
 			// The config property is optional.
-			// If no config is set, an example calendar is shown.
+			// If no config is set, an example feed is shown based on the default configuration settings below.
 			// See 'Configuration options' for more information.
 
 			feeds: [
