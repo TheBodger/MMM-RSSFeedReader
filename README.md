@@ -5,6 +5,10 @@ This module displays RSS details based on a RSS feed that meets RSS 2.0 or ATOM 
 requires htmlparser2 (npm install htmlparser2)
 requires feedMe (npm install feedMe)
 
+This uses the core code developed for the MM2 default module NewsFeed:
+
+thanks to By Michael Teeuw http://michaelteeuw.nl who created this as part of the MM2 ecosystem.
+
 ## Screenshot
 - RSS feed reader Screenshot using Elle magazine RSS 2.0 feed (https://www.elle.com/rss/all.xml/)
 ![RSS feed reader Screenshot](RSSfeed_screenshot.png)
