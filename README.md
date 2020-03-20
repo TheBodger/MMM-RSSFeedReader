@@ -3,7 +3,7 @@ The `MMM-RSSFeedReader ` module is a module for the MagicMirror2 system.
 This module displays RSS details based on a RSS feed that meets RSS 2.0 or ATOM formats, including title, age of post, an image if present and author and summary details about the post. Scrolling through RSS posts happens happens time-based (````updateInterval````), but can also be controlled by sending specific notifications to the module.
 
 Requires: 
-	htmlparser2 (npm install htmlparser2)
+	htmlparser2 (npm install htmlparser2)<br>
 	feedMe (npm install feedMe)
 
 This uses the core code developed for the MM2 default module NewsFeed:
@@ -108,7 +108,7 @@ The following properties can be configured:
 | `Additional config options that are under development`|
 | `showImage` | Will show any extracted image from the post. Depending on the type of the feed (RSS 2.0/ATOM) different processing is used to find a potential usable image <br><br> **Possible values:** `true` or `false` <br> **Default value:** `true`
 | `maxImageWidth` | Will be used to resize an image to fit this width, keeping the original ratio <br><br> **Possible values:** Any valid CSS absolute size measurement <br> **Default value:** `'400px'`
-| `maxImageHeight` | After resizing, will be used to crop the image to this height. Currently, this will also force the post details to appear at this height below the top of the image regardless of the height of the image. experiment to get the best fir for your MM2 <br><br> **Possible values:** Any valid CSS absolute size measurement <br> **Default value:** `'600px'`
+| `maxImageHeight` | After resizing, will be used to crop the image to this height. Currently, this will also force the post details to appear at this height below the top of the image regardless of the height of the image. Experiment to get the best fit for your MM2 <br><br> **Possible values:** Any valid CSS absolute size measurement <br> **Default value:** `'600px'`
 | `processContentForImages` | Will look inside all RSS content to try and find an image. See the code for details<br><br> **Possible values:** `true` or `false` <br> **Default value:** `true`
 | `showVersion` | TODO Will show the RSS Feed type in the header including unrecognised versions<br><br> **Possible values:** `true` or `false` <br> **Default value:** `false`
 | `debugToMM` | TODO Will Will show detailed information from the feed processing to the module area on the screen - <br><br> **Possible values:** `true` or `false` <br> **Default value:** `false`
