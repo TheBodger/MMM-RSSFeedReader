@@ -124,3 +124,5 @@ The `feeds` property contains an array with multiple objects. These objects have
 | `title`    | The name of the feed source to be displayed above the RSS posts. <br><br> This property is optional.
 | `url`      | The `HTTPS` url of the feed used. <br><br> **Example:** `'https://www.nytimes.com/services/xml/rss/nyt/HomePage.xml'` <br><br>The Module will only read feeds from a secure website (HTTPS)<br><br> A good source of usable and maintained feeds is https://www.feedspot.com/ which has 1000s of feeds listed for almost any subject you can think of.
 | `encoding` | The encoding of the RSS feed. <br><br> This property is optional. <br> **Possible values:**`'UTF-8'`, `'ISO-8859-1'`, etc ... <br> **Default value:** `'UTF-8'`
+
+Licensed under MIT Licence terms, see LICENSE file.
