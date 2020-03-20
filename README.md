@@ -105,7 +105,11 @@ The following properties can be configured:
 | `prohibitedWords` | Remove RSS feed post if one of these words is found anywhere in the title (case insensitive and greedy matching) <br><br> **Possible values:** `['word']` or `['word1','word2',...]` `TODO - replace with bad words checking`
 | `scrollLength` | Scrolls the full RSS article page by a given number of pixels when a `ARTICLE_MORE_DETAILS` notification is received and the full RSS article is already displayed.<br><br> **Possible values:** `1` or `10000` <br> **Default value:** `500`
 | `logFeedWarnings` | Log warnings when there is an error parsing a RSS article. <br><br> **Possible values:** `true` or `false` <br> **Default value:** `false`
-| `Additional config options that are under development`|
+<br><br>
+| `Additional config options that are under development, partilly or fully implemented unless flagged as TODO`|
+<br><br>
+| `ignoreCategories` | check categorie(s) of a post match the list below and ignore them (case insensitive match so enter in lower case only in the list) <br><br> **Possible values:** `true` or `false` <br> **Default value:** `true`
+| `ignoreCategoryList` | List of categories to try and match against to stop a post being displayed <br><br> **Possible values:** a list of categories <br> **Default value:** `["horoscopes"]`
 | `showImage` | Will show any extracted image from the post. Depending on the type of the feed (RSS 2.0/ATOM) different processing is used to find a potential usable image <br><br> **Possible values:** `true` or `false` <br> **Default value:** `true`
 | `maxImageWidth` | Will be used to resize an image to fit this width, keeping the original ratio <br><br> **Possible values:** Any valid CSS absolute size measurement <br> **Default value:** `'400px'`
 | `maxImageHeight` | After resizing, will be used to crop the image to this height. Currently, this will also force the post details to appear at this height below the top of the image regardless of the height of the image. Experiment to get the best fit for your MM2 <br><br> **Possible values:** Any valid CSS absolute size measurement <br> **Default value:** `'600px'`
