@@ -33,7 +33,7 @@ var Fetcher = function (RSSurl, reloadInterval, encoding, logFeedWarnings, ignor
 	var reloadTimer = null;
 	var items = [];
 
-	var fetchFailedCallback = function() {};
+	var fetchFailedCallback = function () { };
 	var itemsReceivedCallback = function () { };
 
 	/* private methods */
@@ -52,7 +52,7 @@ var Fetcher = function (RSSurl, reloadInterval, encoding, logFeedWarnings, ignor
 	//	});
 	//});
 
-	var fetchRSS = function() {
+	var fetchRSS = function () {
 		clearTimeout(reloadTimer);
 		reloadTimer = null;
 		items = [];
@@ -148,7 +148,12 @@ var Fetcher = function (RSSurl, reloadInterval, encoding, logFeedWarnings, ignor
 
 				if (title && pubdate) {
 
-					if (!ignoreCategories || (ignoreCategories && ignoreCategoryList.indexOf(category.toLowerCase()) == -1)) {
+					//if (!ignoreCategories || (ignoreCategories && ignoreCategoryList.indexOf(category.toLowerCase()) == -1)) {
+
+					if (!Array.isArray(category)) { category = [category] };
+					category = category.map(v => v.toLowerCase())
+
+					if (!ignoreCategories || (ignoreCategories && category.some(v => ignoreCategoryList.indexOf(v) == -1))) {
 
 						var regex = /(<([^>]+)>)/ig;
 						description = description.toString().replace(regex, "");
@@ -205,7 +210,10 @@ var Fetcher = function (RSSurl, reloadInterval, encoding, logFeedWarnings, ignor
 
 				if (title && pubdate) {
 
-					if (!ignoreCategories || (ignoreCategories && ignoreCategoryList.indexOf(category.toLowerCase()) == -1)) {
+					if (!Array.isArray(category)) { category = [category] };
+					category = category.map(v => v.toLowerCase())
+
+					if (!ignoreCategories || (ignoreCategories && category.some(v => ignoreCategoryList.indexOf(v) == -1))) {
 
 						var regex = /(<([^>]+)>)/ig;
 						description = description.toString().replace(regex, "");
@@ -246,24 +254,26 @@ var Fetcher = function (RSSurl, reloadInterval, encoding, logFeedWarnings, ignor
 			}
 		});
 
-		parser.on("end",	function() {
+		parser.on("end", function () {
 			console.log("end parsing - " + RSSurl);
 			self.broadcastItems();
 			scheduleTimer();
 		});
 
-		parser.on("error", function(error) {
+		parser.on("error", function (error) {
 			fetchFailedCallback(self, error);
 			scheduleTimer();
 		});
 
 		nodeVersion = Number(process.version.match(/^v(\d+\.\d+)/)[1]);
-		headers =	{"User-Agent": "Mozilla/5.0 (Node.js "+ nodeVersion + ") MagicMirror/"	+ global.version +	" (https://github.com/MichMich/MagicMirror/)",
+		headers = {
+			"User-Agent": "Mozilla/5.0 (Node.js " + nodeVersion + ") MagicMirror/" + global.version + " (https://github.com/MichMich/MagicMirror/)",
 			"Cache-Control": "max-age=0, no-cache, no-store, must-revalidate",
-			"Pragma": "no-cache"};
+			"Pragma": "no-cache"
+		};
 
-		request({uri: RSSurl, encoding: null, headers: headers})
-			.on("error", function(error) {
+		request({ uri: RSSurl, encoding: null, headers: headers })
+			.on("error", function (error) {
 				fetchFailedCallback(self, error);
 				scheduleTimer();
 			})
@@ -316,7 +326,7 @@ var Fetcher = function (RSSurl, reloadInterval, encoding, logFeedWarnings, ignor
 			{ decodeEntities: true }
 		);
 		parser.write(content);
-			
+
 		parser.end();
 
 		if (imageLinkURL == "") { return imageURL } else { return imageLinkURL };
@@ -327,10 +337,10 @@ var Fetcher = function (RSSurl, reloadInterval, encoding, logFeedWarnings, ignor
 	 * Schedule the timer for the next update.
 	 */
 
-	var scheduleTimer = function() {
+	var scheduleTimer = function () {
 		//console.log('Schedule update timer.');
 		clearTimeout(reloadTimer);
-		reloadTimer = setTimeout(function() {
+		reloadTimer = setTimeout(function () {
 			fetchRSS();
 		}, reloadInterval);
 	};
@@ -342,7 +352,7 @@ var Fetcher = function (RSSurl, reloadInterval, encoding, logFeedWarnings, ignor
 	 *
 	 * attribute interval number - Interval for the update in milliseconds.
 	 */
-	this.setReloadInterval = function(interval) {
+	this.setReloadInterval = function (interval) {
 		if (interval > 1000 && interval < reloadInterval) {
 			reloadInterval = interval;
 		}
@@ -351,14 +361,14 @@ var Fetcher = function (RSSurl, reloadInterval, encoding, logFeedWarnings, ignor
 	/* startFetch()
 	 * Initiate fetchRSS();
 	 */
-	this.startFetch = function() {
+	this.startFetch = function () {
 		fetchRSS();
 	};
 
 	/* broadcastItems()
 	 * Broadcast the existing items.
 	 */
-	this.broadcastItems = function() {
+	this.broadcastItems = function () {
 		if (items.length <= 0) {
 			//console.log('No items to broadcast yet.');
 			return;
@@ -367,19 +377,19 @@ var Fetcher = function (RSSurl, reloadInterval, encoding, logFeedWarnings, ignor
 		itemsReceivedCallback(self);
 	};
 
-	this.onReceive = function(callback) {
+	this.onReceive = function (callback) {
 		itemsReceivedCallback = callback;
 	};
 
-	this.onError = function(callback) {
+	this.onError = function (callback) {
 		fetchFailedCallback = callback;
 	};
 
-	this.RSSurl = function() {
+	this.RSSurl = function () {
 		return RSSurl;
 	};
 
-	this.items = function() {
+	this.items = function () {
 		return items;
 	};
 };
