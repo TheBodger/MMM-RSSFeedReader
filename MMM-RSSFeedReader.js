@@ -59,8 +59,8 @@
 //	<url> - Defines the URL to the image
 //	<title> - Defines the text to display if the image could not be shown
 //	<link> - Defines the hyperlink to the website that offers the channel
-											
-Module.register("MMM-RSSFeedReader",{
+
+Module.register("MMM-RSSFeedReader", {
 
 	// Default module config.
 	defaults: {
@@ -79,7 +79,9 @@ Module.register("MMM-RSSFeedReader",{
 		showImage: true,
 		maxImageWidth: '400px', //will be used to resize the image
 		maxImageHeight: '600px', //will be used to crop the image
-		processContentForImages:true,
+		constrainModuleWidth: false,
+		maxModuleWidth: '600px', //will be used if required to constrain this modules total width,controlled by the switch above
+		processContentForImages: true,
 		showVersion: false,
 		debugToMM: false,
 		wrapTitle: true,
@@ -94,7 +96,7 @@ Module.register("MMM-RSSFeedReader",{
 		ignoreOldItems: false,
 		ignoreOlderThan: 12 * 24 * 60 * 60 * 1000, // 12 days
 		ignoreCategories: true, //if true, check categories match the list below and ignore them (case insensitive match so enter in lower case only in the list)
-		ignoreCategoryList:["horoscopes"],
+		ignoreCategoryList: ["horoscopes"],
 		removeStartTags: "",
 		removeEndTags: "",
 		startTags: [],
@@ -105,12 +107,12 @@ Module.register("MMM-RSSFeedReader",{
 	},
 
 	// Define required scripts.
-	getScripts: function() {
+	getScripts: function () {
 		return ["moment.js"];
 	},
 
 	// Define required translations.
-	getTranslations: function() {
+	getTranslations: function () {
 		// The translations for the default modules are defined in the core translation files.
 		// Therefor we can just return false. Otherwise we should have returned a dictionary.
 		// If you're trying to build your own module including translations, check out the documentation.
@@ -118,7 +120,7 @@ Module.register("MMM-RSSFeedReader",{
 	},
 
 	// Define start sequence.
-	start: function() {
+	start: function () {
 		Log.info("Starting module: " + this.name);
 
 		// Set locale.
@@ -135,7 +137,7 @@ Module.register("MMM-RSSFeedReader",{
 	},
 
 	// Override socket notification handler.
-	socketNotificationReceived: function(notification, payload) {
+	socketNotificationReceived: function (notification, payload) {
 		if (notification === "RSS_ITEMS") {
 			this.generateFeed(payload);
 
@@ -151,6 +153,11 @@ Module.register("MMM-RSSFeedReader",{
 	getDom: function () {
 
 		var wrapper = document.createElement("div");
+
+		if (this.config.constrainModuleWidth) {
+			wrapper.style.width = this.config.maxModuleWidth;
+			wrapper.style.textAlign = "center";
+		}
 
 		if (this.config.feedUrl) {
 			wrapper.className = "small bright";
@@ -204,25 +211,18 @@ Module.register("MMM-RSSFeedReader",{
 
 				imageLink.id = "MMM-RSSFeedReader-image";
 
-				imageLink.style.overflow = "hidden";
-				//imageLink.style.width = `${this.config.maxImageWidth}`; //this breaks the centering of the image
-				imageLink.style.height = `${this.config.maxImageHeight}`;
-
-				//console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-				//console.log(`'${this.config.maxImageWidth}'`)
-				//console.log(imageLink.style)
-
-
 				//add a nice feathered edge using CSS
 
+				//<div style="mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, black 3%, black 97%, transparent 100%);">
+				//	<img src="../modules/MMM-BackgroundSlideshow/exampleImages/230241.jpg" alt="" height="500" style="mask-image: linear-gradient(to right, rgba(0,0,0,0) 0%, black 3%, black 97%, transparent 100%);" />
+				//</div>
+
+				imageLink.style = "overflow:hidden; max-height:" + `${this.config.maxImageHeight}` + ";mask-image:linear-gradient(to bottom, rgba(0,0,0,0) 0%, black 3%, black 97%, transparent 100%);";
+				//imageLink.style.width = `${this.config.maxImageWidth}`; //this breaks the centering of the image
+				//imageLink.style.maskimage = "linear-gradient(to bottom, rgba(0,0,0,0) 0%, black 3%, black 97%, transparent 100%);";
 
 
-//.mask3 {mask - image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1.0) 5%,rgba(0, 0, 0, 1.0) 95%, rgba(0, 0, 0, 0.0) 100%);}
-//<img width="400" height="600" class="slight-shadow mask3" alt="With gradient mask" src="https://d33wubrfki0l68.cloudfront.net/175114938be87ad0c1170d95e2fdaa616846eb49/d40da/images/css/masking/masking-example1.jpg">
-
-
-
-				imageLink.innerHTML = "<img src='" + tempimage.image + `' width='${this.config.maxImageWidth}' style="margin-left: auto;margin-right: auto;display: block;">`;
+				imageLink.innerHTML = "<img src='" + tempimage.image + `' width='${this.config.maxImageWidth}' style="margin-left: auto;margin-right: auto;display: block;mask-image: linear-gradient(to right, rgba(0,0,0,0) 0%, black 3%, black 97%, transparent 100%);">`;
 				imageLink.innerHTML += "<p class='light' style='text-align: center;'> " + tempimage.description.substring(0, textlength) + captionSuffix; +"</p>";
 
 				imageDisplay.appendChild(imageLink);
@@ -239,9 +239,9 @@ Module.register("MMM-RSSFeedReader",{
 
 			if (this.config.removeStartTags === "title" || this.config.removeStartTags === "both") {
 
-				for (f=0; f<this.config.startTags.length;f++) {
-					if (this.rssItems[this.activeItem].title.slice(0,this.config.startTags[f].length) === this.config.startTags[f]) {
-						this.rssItems[this.activeItem].title = this.rssItems[this.activeItem].title.slice(this.config.startTags[f].length,this.rssItems[this.activeItem].title.length);
+				for (f = 0; f < this.config.startTags.length; f++) {
+					if (this.rssItems[this.activeItem].title.slice(0, this.config.startTags[f].length) === this.config.startTags[f]) {
+						this.rssItems[this.activeItem].title = this.rssItems[this.activeItem].title.slice(this.config.startTags[f].length, this.rssItems[this.activeItem].title.length);
 					}
 				}
 
@@ -250,9 +250,9 @@ Module.register("MMM-RSSFeedReader",{
 			if (this.config.removeStartTags === "description" || this.config.removeStartTags === "both") {
 
 				if (this.isShowingDescription) {
-					for (f=0; f<this.config.startTags.length;f++) {
-						if (this.rssItems[this.activeItem].description.slice(0,this.config.startTags[f].length) === this.config.startTags[f]) {
-							this.rssItems[this.activeItem].description = this.rssItems[this.activeItem].description.slice(this.config.startTags[f].length,this.rssItems[this.activeItem].description.length);
+					for (f = 0; f < this.config.startTags.length; f++) {
+						if (this.rssItems[this.activeItem].description.slice(0, this.config.startTags[f].length) === this.config.startTags[f]) {
+							this.rssItems[this.activeItem].description = this.rssItems[this.activeItem].description.slice(this.config.startTags[f].length, this.rssItems[this.activeItem].description.length);
 						}
 					}
 				}
@@ -262,23 +262,23 @@ Module.register("MMM-RSSFeedReader",{
 			//Remove selected tags from the end of rss feed items (title or description)
 
 			if (this.config.removeEndTags) {
-				for (f=0; f<this.config.endTags.length;f++) {
-					if (this.rssItems[this.activeItem].title.slice(-this.config.endTags[f].length)===this.config.endTags[f]) {
-						this.rssItems[this.activeItem].title = this.rssItems[this.activeItem].title.slice(0,-this.config.endTags[f].length);
+				for (f = 0; f < this.config.endTags.length; f++) {
+					if (this.rssItems[this.activeItem].title.slice(-this.config.endTags[f].length) === this.config.endTags[f]) {
+						this.rssItems[this.activeItem].title = this.rssItems[this.activeItem].title.slice(0, -this.config.endTags[f].length);
 					}
 				}
 
 				if (this.isShowingDescription) {
-					for (f=0; f<this.config.endTags.length;f++) {
-						if (this.rssItems[this.activeItem].description.slice(-this.config.endTags[f].length)===this.config.endTags[f]) {
-							this.rssItems[this.activeItem].description = this.rssItems[this.activeItem].description.slice(0,-this.config.endTags[f].length);
+					for (f = 0; f < this.config.endTags.length; f++) {
+						if (this.rssItems[this.activeItem].description.slice(-this.config.endTags[f].length) === this.config.endTags[f]) {
+							this.rssItems[this.activeItem].description = this.rssItems[this.activeItem].description.slice(0, -this.config.endTags[f].length);
 						}
 					}
 				}
 
 			}
 
-			if(!this.config.showFullArticle){
+			if (!this.config.showFullArticle) {
 				var title = document.createElement("div");
 				title.className = "rssfeed-title bright medium light" + (!this.config.wrapTitle ? " no-wrap" : "");
 				title.innerHTML = this.rssItems[this.activeItem].title;
@@ -324,14 +324,14 @@ Module.register("MMM-RSSFeedReader",{
 		return wrapper;
 	},
 
-	getActiveItemURL: function() {
-		return typeof this.rssItems[this.activeItem].url  === "string" ? this.rssItems[this.activeItem].url : this.rssItems[this.activeItem].url.href;
+	getActiveItemURL: function () {
+		return typeof this.rssItems[this.activeItem].url === "string" ? this.rssItems[this.activeItem].url : this.rssItems[this.activeItem].url.href;
 	},
 
 	/* registerFeeds()
 	 * registers the feeds to be used by the backend.
 	 */
-	registerFeeds: function() {
+	registerFeeds: function () {
 		for (var f in this.config.feeds) {
 			var feed = this.config.feeds[f];
 			this.sendSocketNotification("ADD_FEED", {
@@ -347,7 +347,7 @@ Module.register("MMM-RSSFeedReader",{
 	 * attribute feeds object - An object with feeds returned by the node helper.
 	 */
 
-	generateFeed: function(feeds) {
+	generateFeed: function (feeds) {
 		var rssItems = [];
 		for (var feed in feeds) {
 			var feedItems = feeds[feed];
@@ -361,18 +361,18 @@ Module.register("MMM-RSSFeedReader",{
 				}
 			}
 		}
-		rssItems.sort(function(a,b) {
+		rssItems.sort(function (a, b) {
 			var dateA = new Date(a.pubdate);
 			var dateB = new Date(b.pubdate);
 			return dateB - dateA;
 		});
-		if(this.config.maxRSSItems > 0) {
+		if (this.config.maxRSSItems > 0) {
 			rssItems = rssItems.slice(0, this.config.maxRSSItems);
 		}
 
-		if(this.config.prohibitedWords.length > 0) {
-			rssItems = rssItems.filter(function(value){
-				for (var i=0; i < this.config.prohibitedWords.length; i++) {
+		if (this.config.prohibitedWords.length > 0) {
+			rssItems = rssItems.filter(function (value) {
+				for (var i = 0; i < this.config.prohibitedWords.length; i++) {
 					if (value["title"].toLowerCase().indexOf(this.config.prohibitedWords[i].toLowerCase()) > -1) {
 						return false;
 					}
@@ -392,7 +392,7 @@ Module.register("MMM-RSSFeedReader",{
 
 		// check if updated items exist, if so and if we should broadcast these updates, then lets do so
 		if (this.config.broadcastRSSUpdates && updatedItems.length > 0) {
-			this.sendNotification("RSS_FEED_UPDATE", {items: updatedItems});
+			this.sendNotification("RSS_FEED_UPDATE", { items: updatedItems });
 		}
 
 		this.rssItems = rssItems;
@@ -405,7 +405,7 @@ Module.register("MMM-RSSFeedReader",{
 	 *
 	 * returns bool
 	 */
-	subscribedToFeed: function(feedUrl) {
+	subscribedToFeed: function (feedUrl) {
 		for (var f in this.config.feeds) {
 			var feed = this.config.feeds[f];
 			if (feed.url === feedUrl) {
@@ -422,7 +422,7 @@ Module.register("MMM-RSSFeedReader",{
 	 *
 	 * returns string
 	 */
-	titleForFeed: function(feedUrl) {
+	titleForFeed: function (feedUrl) {
 		for (var f in this.config.feeds) {
 			var feed = this.config.feeds[f];
 			if (feed.url === feedUrl) {
@@ -435,23 +435,23 @@ Module.register("MMM-RSSFeedReader",{
 	/* scheduleUpdateInterval()
 	 * Schedule visual update.
 	 */
-	scheduleUpdateInterval: function() {
+	scheduleUpdateInterval: function () {
 		var self = this;
 
 		self.updateDom(self.config.animationSpeed);
 
 		// Broadcast RSSFeed if needed
 		if (self.config.broadcastRSSFeeds) {
-			self.sendNotification("RSS_FEED", {items: self.rssItems});
+			self.sendNotification("RSS_FEED", { items: self.rssItems });
 		}
 
-		timer = setInterval(function() {
+		timer = setInterval(function () {
 			self.activeItem++;
 			self.updateDom(self.config.animationSpeed);
 
 			// Broadcast RSSFeed if needed
 			if (self.config.broadcastRSSFeeds) {
-				self.sendNotification("RSS_FEED", {items: self.rssItems});
+				self.sendNotification("RSS_FEED", { items: self.rssItems });
 			}
 		}, this.config.updateInterval);
 	},
@@ -463,25 +463,25 @@ Module.register("MMM-RSSFeedReader",{
 	 *
 	 * return string - Capitalized output string.
 	 */
-	capitalizeFirstLetter: function(string) {
+	capitalizeFirstLetter: function (string) {
 		return string.charAt(0).toUpperCase() + string.slice(1);
 	},
 
-	resetDescrOrFullArticleAndTimer: function() {
+	resetDescrOrFullArticleAndTimer: function () {
 		this.isShowingDescription = this.config.showDescription;
 		this.config.showFullArticle = false;
 		this.scrollPosition = 0;
 		// reset bottom bar alignment
 		document.getElementsByClassName("region bottom bar")[0].style.bottom = "0";
 		document.getElementsByClassName("region bottom bar")[0].style.top = "inherit";
-		if(!timer){
+		if (!timer) {
 			this.scheduleUpdateInterval();
 		}
 	},
 
-	notificationReceived: function(notification, payload, sender) {
+	notificationReceived: function (notification, payload, sender) {
 		Log.info(this.name + " - received notification: " + notification);
-		if(notification === "ARTICLE_NEXT"){
+		if (notification === "ARTICLE_NEXT") {
 			var before = this.activeItem;
 			this.activeItem++;
 			if (this.activeItem >= this.rssItems.length) {
@@ -490,7 +490,7 @@ Module.register("MMM-RSSFeedReader",{
 			this.resetDescrOrFullArticleAndTimer();
 			Log.info(this.name + " - going from article #" + before + " to #" + this.activeItem + " (of " + this.rssItems.length + ")");
 			this.updateDom(100);
-		} else if(notification === "ARTICLE_PREVIOUS"){
+		} else if (notification === "ARTICLE_PREVIOUS") {
 			var before = this.activeItem;
 			this.activeItem--;
 			if (this.activeItem < 0) {
@@ -501,9 +501,9 @@ Module.register("MMM-RSSFeedReader",{
 			this.updateDom(100);
 		}
 		// if "more details" is received the first time: show article summary, on second time show full article
-		else if(notification === "ARTICLE_MORE_DETAILS"){
+		else if (notification === "ARTICLE_MORE_DETAILS") {
 			// full article is already showing, so scrolling down
-			if(this.config.showFullArticle === true){
+			if (this.config.showFullArticle === true) {
 				this.scrollPosition += this.config.scrollLength;
 				window.scrollTo(0, this.scrollPosition);
 				Log.info(this.name + " - scrolling down");
@@ -512,42 +512,42 @@ Module.register("MMM-RSSFeedReader",{
 			else {
 				this.showFullArticle();
 			}
-		} else if(notification === "ARTICLE_SCROLL_UP"){
-			if(this.config.showFullArticle === true){
+		} else if (notification === "ARTICLE_SCROLL_UP") {
+			if (this.config.showFullArticle === true) {
 				this.scrollPosition -= this.config.scrollLength;
 				window.scrollTo(0, this.scrollPosition);
 				Log.info(this.name + " - scrolling up");
 				Log.info(this.name + " - ARTICLE_SCROLL_UP, scroll position: " + this.config.scrollLength);
 			}
-		} else if(notification === "ARTICLE_LESS_DETAILS"){
+		} else if (notification === "ARTICLE_LESS_DETAILS") {
 			this.resetDescrOrFullArticleAndTimer();
 			Log.info(this.name + " - showing only article titles again");
 			this.updateDom(100);
-		} else if (notification === "ARTICLE_TOGGLE_FULL"){
-			if (this.config.showFullArticle){
+		} else if (notification === "ARTICLE_TOGGLE_FULL") {
+			if (this.config.showFullArticle) {
 				this.activeItem++;
 				this.resetDescrOrFullArticleAndTimer();
 			} else {
 				this.showFullArticle();
 			}
-		} else if (notification === "ARTICLE_INFO_REQUEST"){
+		} else if (notification === "ARTICLE_INFO_REQUEST") {
 			this.sendNotification("ARTICLE_INFO_RESPONSE", {
-				title:  this.rssItems[this.activeItem].title,
+				title: this.rssItems[this.activeItem].title,
 				source: this.rssItems[this.activeItem].sourceTitle,
-				date:   this.rssItems[this.activeItem].pubdate,
-				desc:   this.rssItems[this.activeItem].description,
-				url:    this.getActiveItemURL()
+				date: this.rssItems[this.activeItem].pubdate,
+				desc: this.rssItems[this.activeItem].description,
+				url: this.getActiveItemURL()
 			});
 		} else {
 			Log.info(this.name + " - unknown notification, ignoring: " + notification);
 		}
 	},
 
-	showFullArticle: function() {
+	showFullArticle: function () {
 		this.isShowingDescription = !this.isShowingDescription;
 		this.config.showFullArticle = !this.isShowingDescription;
 		// make bottom bar align to top to allow scrolling
-		if(this.config.showFullArticle === true){
+		if (this.config.showFullArticle === true) {
 			document.getElementsByClassName("region bottom bar")[0].style.bottom = "inherit";
 			document.getElementsByClassName("region bottom bar")[0].style.top = "-90px";
 		}
