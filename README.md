@@ -117,7 +117,7 @@ The following properties can be configured:
 | `showVersion` | TODO Will show the RSS Feed type in the header including unrecognised versions<br><br> **Possible values:** `true` or `false` <br> **Default value:** `false`
 | `debugToMM` | TODO Will Will show detailed information from the feed processing to the module area on the screen - <br><br> **Possible values:** `true` or `false` <br> **Default value:** `false`
 | `constrainModuleWidth` | forces the module to a fixed width within the requested region - <br><br> **Possible values:** `true` or `false` <br> **Default value:** `false`
-| `maxModuleWidth` | if the module is constrained in its width this is the width applied - <br><br> **Possible values:** any valud absolute CSS 3 measurement<br> **Default value:** `600px`
+| `maxModuleWidth` | if the module is constrained in its width this is the width applied - <br><br> **Possible values:** any valid absolute CSS 3 measurement<br> **Default value:** `600px`
 
 The `feeds` property contains an array with multiple objects. These objects have the following properties:
 
