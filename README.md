@@ -106,10 +106,7 @@ The following properties can be configured:
 | `scrollLength` | Scrolls the full RSS article page by a given number of pixels when a `ARTICLE_MORE_DETAILS` notification is received and the full RSS article is already displayed.<br><br> **Possible values:** `1` or `10000` <br> **Default value:** `500`
 | `logFeedWarnings` | Log warnings when there is an error parsing a RSS article. <br><br> **Possible values:** `true` or `false` <br> **Default value:** `false`
 | `showImage` | Will display an image regardless of other settings if true <br><br> **Possible values:** `true` or `false` <br> **Default value:** `true`
-
-<br><br>
 | `Additional config options that are under development, partilly or fully implemented unless flagged as TODO`|
-<br><br>
 | `ignoreCategories` | check categorie(s) of a post match the list below and ignore them (case insensitive match so enter in lower case only in the list) <br><br> **Possible values:** `true` or `false` <br> **Default value:** `true`
 | `ignoreCategoryList` | List of categories to try and match against to stop a post being displayed <br><br> **Possible values:** a list of categories <br> **Default value:** `["horoscopes"]`
 | `showImage` | Will show any extracted image from the post. Depending on the type of the feed (RSS 2.0/ATOM) different processing is used to find a potential usable image <br><br> **Possible values:** `true` or `false` <br> **Default value:** `true`
