@@ -172,9 +172,10 @@ Module.register("MMM-RSSFeedReader", {
 		if (this.rssItems.length > 0) {
 
 			// this.config.showFullArticle is a run-time configuration, triggered by optional notifications
+			var sourceAndTimestamp = document.createElement("div"); //we require this div for the image, if displayed
 
 			if (!this.config.showFullArticle && (this.config.showSourceTitle || this.config.showPublishDate)) {
-				var sourceAndTimestamp = document.createElement("div");
+
 				sourceAndTimestamp.className = "rssfeed-source light small dimmed";
 
 				if (this.config.showSourceTitle && this.rssItems[this.activeItem].sourceTitle !== "") {
@@ -197,7 +198,6 @@ Module.register("MMM-RSSFeedReader", {
 				console.log("Loading Images");
 
 				var tempimage = this.rssItems[this.activeItem];
-				var imageLink = document.createElement('div');
 
 				var textlength = tempimage.description.length;
 				var captionSuffix = "";
@@ -209,6 +209,7 @@ Module.register("MMM-RSSFeedReader", {
 					textlength = self.config.lengthDescription - captionSuffix.length;
 				};
 
+				var imageLink = document.createElement('div');
 				imageLink.id = "MMM-RSSFeedReader-image";
 
 				//add a nice feathered edge using CSS
@@ -222,7 +223,7 @@ Module.register("MMM-RSSFeedReader", {
 				//imageLink.style.maskimage = "linear-gradient(to bottom, rgba(0,0,0,0) 0%, black 3%, black 97%, transparent 100%);";
 
 
-				imageLink.innerHTML = "<img src='" + tempimage.image + `' width='${this.config.maxImageWidth}' style="margin-left: auto;margin-right: auto;display: block;mask-image: linear-gradient(to right, rgba(0,0,0,0) 0%, black 3%, black 97%, transparent 100%);">`;
+				if (this.config.showImage) { imageLink.innerHTML = "<img src='" + tempimage.image + `' width='${this.config.maxImageWidth}' style="margin-left: auto;margin-right: auto;display: block;mask-image: linear-gradient(to right, rgba(0,0,0,0) 0%, black 3%, black 97%, transparent 100%);">` };
 				imageLink.innerHTML += "<p class='light' style='text-align: center;'> " + tempimage.description.substring(0, textlength) + captionSuffix; +"</p>";
 
 				imageDisplay.appendChild(imageLink);
@@ -231,9 +232,31 @@ Module.register("MMM-RSSFeedReader", {
 
 				//end of new XML stuff
 
-				wrapper.appendChild(sourceAndTimestamp);
-
 			}
+			else {
+
+				if (this.config.showImage) {
+
+					var imageDisplay = document.createElement('div');
+
+					var tempimage = this.rssItems[this.activeItem];
+
+
+					var imageLink = document.createElement('div');
+					imageLink.id = "MMM-RSSFeedReader-image";
+
+					imageLink.style = "overflow:hidden; max-height:" + `${this.config.maxImageHeight}` + ";mask-image:linear-gradient(to bottom, rgba(0,0,0,0) 0%, black 3%, black 97%, transparent 100%);";
+
+					if (this.config.showImage) { imageLink.innerHTML = "<img src='" + tempimage.image + `' width='${this.config.maxImageWidth}' style="margin-left: auto;margin-right: auto;display: block;mask-image: linear-gradient(to right, rgba(0,0,0,0) 0%, black 3%, black 97%, transparent 100%);">` };
+
+					imageDisplay.appendChild(imageLink);
+
+					sourceAndTimestamp.appendChild(imageDisplay);
+
+				}
+			}
+
+			wrapper.appendChild(sourceAndTimestamp);
 
 			//Remove selected tags from the beginning of rss feed items (title or description)
 
