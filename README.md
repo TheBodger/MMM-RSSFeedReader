@@ -105,6 +105,8 @@ The following properties can be configured:
 | `prohibitedWords` | Remove RSS feed post if one of these words is found anywhere in the title (case insensitive and greedy matching) <br><br> **Possible values:** `['word']` or `['word1','word2',...]` `TODO - replace with bad words checking`
 | `scrollLength` | Scrolls the full RSS article page by a given number of pixels when a `ARTICLE_MORE_DETAILS` notification is received and the full RSS article is already displayed.<br><br> **Possible values:** `1` or `10000` <br> **Default value:** `500`
 | `logFeedWarnings` | Log warnings when there is an error parsing a RSS article. <br><br> **Possible values:** `true` or `false` <br> **Default value:** `false`
+| `showImage` | Will display an image regardless of other settings if true <br><br> **Possible values:** `true` or `false` <br> **Default value:** `true`
+
 <br><br>
 | `Additional config options that are under development, partilly or fully implemented unless flagged as TODO`|
 <br><br>
@@ -117,7 +119,7 @@ The following properties can be configured:
 | `showVersion` | TODO Will show the RSS Feed type in the header including unrecognised versions<br><br> **Possible values:** `true` or `false` <br> **Default value:** `false`
 | `debugToMM` | TODO Will Will show detailed information from the feed processing to the module area on the screen - <br><br> **Possible values:** `true` or `false` <br> **Default value:** `false`
 | `constrainModuleWidth` | forces the module to a fixed width within the requested region - <br><br> **Possible values:** `true` or `false` <br> **Default value:** `false`
-| `maxModuleWidth` | if the module is constrained in its width this is the width applied - <br><br> **Possible values:** any valid absolute CSS 3 measurement<br> **Default value:** `600px`
+| `maxModuleWidth` | if the module is constrained in its width this is the width applied - <br><br> **Possible values:** any valud absolute CSS 3 measurement<br> **Default value:** `600px`
 
 The `feeds` property contains an array with multiple objects. These objects have the following properties:
 

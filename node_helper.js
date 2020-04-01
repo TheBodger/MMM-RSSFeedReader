@@ -17,13 +17,13 @@ var RSSFetcher = require("./RSSfetcher.js");
 module.exports = NodeHelper.create({
 	// Subclass start method.
 
-	start: function() {
+	start: function () {
 		console.log("Starting module: " + this.name);
 		this.RSSfetchers = [];
 	},
 
 	// Subclass socketNotificationReceived received.
-	socketNotificationReceived: function(notification, payload) {
+	socketNotificationReceived: function (notification, payload) {
 		if (notification === "ADD_FEED") {
 			this.createRSSFetcher(payload.feed, payload.config);
 			return;
@@ -38,7 +38,7 @@ module.exports = NodeHelper.create({
 	 * attribute config object - A configuration object containing reload interval in milliseconds.
 	 */
 
-	createRSSFetcher: function(feed, config) {
+	createRSSFetcher: function (feed, config) {
 		var self = this;
 
 		var url = feed.url || "";
@@ -87,7 +87,7 @@ module.exports = NodeHelper.create({
 	 * and broadcasts these using sendSocketNotification.
 	 */
 
-	broadcastFeeds: function() {
+	broadcastFeeds: function () {
 		var feeds = {};
 		for (var f in this.RSSfetchers) {
 			feeds[f] = this.RSSfetchers[f].items();
