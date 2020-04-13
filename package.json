@@ -1,0 +1,27 @@
+{
+  "name": "MMM-RSSFeedReader",
+  "version": "1.0.0",
+  "description": "Magic Mirror Module for displaying your Instagram Posts on Magic Mirror",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheBodger/MMM-RSSFeedReader"
+  },
+  "keywords": [
+    "magic mirror",
+    "smart mirror",
+    "RSS Feeds",
+    "entertainment",
+    "module"
+  ],
+  "author": "Neil Scott",
+  "contributors": "https://github.com/TheBodger/MMM-RSSFeedReader/graphs/contributors",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TheBodger/MMM-RSSFeedReader/issues"
+  },
+  "homepage": "https://github.com/TheBodger/MMM-RSSFeedReader#readme",
+  "dependencies": {
+    "htmlparser2": "latest",
+    "feedMe": "latest"
+  }
+}
