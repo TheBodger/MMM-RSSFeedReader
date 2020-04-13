@@ -119,6 +119,12 @@ Module.register("MMM-RSSFeedReader", {
 		return false;
 	},
 
+	getStyles: function () {
+		return [
+			'MMM-RSSFeedReader.css'
+		];
+	},
+
 	// Define start sequence.
 	start: function () {
 		Log.info("Starting module: " + this.name);
@@ -211,19 +217,11 @@ Module.register("MMM-RSSFeedReader", {
 
 				var imageLink = document.createElement('div');
 				imageLink.id = "MMM-RSSFeedReader-image";
+				imageLink.className = "div_feather";
 
-				//add a nice feathered edge using CSS
+				imageLink.style = "overflow:hidden; max-height:" + `${this.config.maxImageHeight}` + ";";
 
-				//<div style="mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, black 3%, black 97%, transparent 100%);">
-				//	<img src="../modules/MMM-BackgroundSlideshow/exampleImages/230241.jpg" alt="" height="500" style="mask-image: linear-gradient(to right, rgba(0,0,0,0) 0%, black 3%, black 97%, transparent 100%);" />
-				//</div>
-
-				imageLink.style = "overflow:hidden; max-height:" + `${this.config.maxImageHeight}` + ";mask-image:linear-gradient(to bottom, rgba(0,0,0,0) 0%, black 3%, black 97%, transparent 100%);";
-				//imageLink.style.width = `${this.config.maxImageWidth}`; //this breaks the centering of the image
-				//imageLink.style.maskimage = "linear-gradient(to bottom, rgba(0,0,0,0) 0%, black 3%, black 97%, transparent 100%);";
-
-
-				if (this.config.showImage) { imageLink.innerHTML = "<img src='" + tempimage.image + `' width='${this.config.maxImageWidth}' style="margin-left: auto;margin-right: auto;display: block;mask-image: linear-gradient(to right, rgba(0,0,0,0) 0%, black 3%, black 97%, transparent 100%);">` };
+				if (this.config.showImage) { imageLink.innerHTML = "<img class='img_feather' src='" + tempimage.image + `' width='${this.config.maxImageWidth}' style="margin-left: auto;margin-right: auto;display: block;">` };
 				imageLink.innerHTML += "<p class='light' style='text-align: center;'> " + tempimage.description.substring(0, textlength) + captionSuffix; +"</p>";
 
 				imageDisplay.appendChild(imageLink);
@@ -244,10 +242,11 @@ Module.register("MMM-RSSFeedReader", {
 
 					var imageLink = document.createElement('div');
 					imageLink.id = "MMM-RSSFeedReader-image";
+					imageLink.className = "div_feather";
 
-					imageLink.style = "overflow:hidden; max-height:" + `${this.config.maxImageHeight}` + ";mask-image:linear-gradient(to bottom, rgba(0,0,0,0) 0%, black 3%, black 97%, transparent 100%);";
+					imageLink.style = "overflow:hidden; max-height:" + `${this.config.maxImageHeight}` + ";";
 
-					if (this.config.showImage) { imageLink.innerHTML = "<img src='" + tempimage.image + `' width='${this.config.maxImageWidth}' style="margin-left: auto;margin-right: auto;display: block;mask-image: linear-gradient(to right, rgba(0,0,0,0) 0%, black 3%, black 97%, transparent 100%);">` };
+					if (this.config.showImage) { imageLink.innerHTML = "<img class='img_feather' src='" + tempimage.image + `' width='${this.config.maxImageWidth}' style="margin-left: auto;margin-right: auto;display: block;">` };
 
 					imageDisplay.appendChild(imageLink);
 
